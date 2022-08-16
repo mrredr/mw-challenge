@@ -6,8 +6,8 @@ const initialState = {};
 const enhancers = [];
 const middlewares = [thunk];
 
-//@todo: add redux dev tools
+const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
-const composedEnhancers = compose(applyMiddleware(...middlewares), ...enhancers);
+const composedEnhancers = composeEnhancers(applyMiddleware(...middlewares), ...enhancers);
 
 export default createStore(rootReducer, initialState, composedEnhancers);
