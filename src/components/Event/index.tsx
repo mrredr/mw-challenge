@@ -2,6 +2,7 @@ import { Button, Card, Popconfirm, Space } from "antd";
 import { useDispatch } from "react-redux";
 import { STATUS_COLOR } from "../../constants/statusColors";
 import { deleteEvent } from "../../redux/events/actions";
+import { setShowModal } from "../../redux/modal/actions";
 import { EventType } from "../../types/event";
 
 type Props = {
@@ -20,6 +21,7 @@ export default function Event({ event }: Props) {
       title={`${event.title} - ${event.status}`}
       extra={
         <Space direction="horizontal">
+          <Button type="link" onClick={() => dispatch(setShowModal(event.id))}>Edit</Button>
           <Popconfirm placement="left" title={"Are you sure want to delete this event?"} onConfirm={onDeleteClick} okText="Yes" cancelText="No">
             <Button type="link" style={{color: 'red'}}>Delete</Button>
           </Popconfirm>

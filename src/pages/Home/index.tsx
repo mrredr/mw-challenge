@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Segmented, Space } from "antd";
 import {
   CalendarContainer,
   EventListContainer,
@@ -9,8 +10,9 @@ import EventList from "../../components/EventList";
 import Calendar from "../../components/Calendar";
 import { useDispatch } from "react-redux";
 import { getEvents } from "../../redux/events/events";
-import { eventsSelector } from "../../redux/events/selectors";
-import { Segmented, Space } from "antd";
+import EventsManage from "../../components/EventsManage";
+import { setSearch } from "../../redux/search/events";
+import { filtredEventsSelector } from "../../redux/events/selectors";
 import { useSelector } from "../../redux/hooks";
 
 export interface Props {}
@@ -23,13 +25,17 @@ enum PageTypes {
 export function HomePage(props: Props) {
   const [page, setPage] = useState<PageTypes>(PageTypes.LIST);
 
-  const events = useSelector(eventsSelector);
+  const events = useSelector(filtredEventsSelector);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getEvents());
   }, [dispatch]);
+
+  const setSearchValue = (value) => {
+    dispatch(setSearch(value));
+  };
 
   if (!events) {
     return <p>Loading...</p>;
@@ -44,6 +50,7 @@ export function HomePage(props: Props) {
             onChange={(value: PageTypes) => setPage(value)}
             size="large"
           />
+          <EventsManage onFilter={setSearchValue} />
         </Space>
       </HeaderContainer>
       {page === PageTypes.LIST && (

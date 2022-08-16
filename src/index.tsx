@@ -5,12 +5,14 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import './app.css'
+import { EventFormModal } from "./components/EventFormModal";
 
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
   <Provider store={store}>
     <HomePage />
+    <EventFormModal />
   </Provider>
 );
 
