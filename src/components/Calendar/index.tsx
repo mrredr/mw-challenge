@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import FullCalendar, { EventSourceInput } from "@fullcalendar/react";
-import React, { useEffect, useState } from "react";
-import { EventType } from "../../types/event";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import { EventType } from "../../types/event";
+import { STATUS_COLOR } from "../../constants/statusColors";
+import { useDispatch } from "react-redux";
+import { setShowModal } from "../../redux/modal/actions";
 
 type Props = {
   events: EventType[] | undefined;
@@ -9,6 +12,7 @@ type Props = {
 
 export default function Calendar({ events }: Props) {
   const [calendarEvents, setCalendarEvents] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCalendarEvents(
@@ -18,7 +22,7 @@ export default function Calendar({ events }: Props) {
           title: event.title,
           start: event.start_time,
           end: event.end_time,
-          color: "red", //@todo: bonus! Change color based on status!
+          color: STATUS_COLOR[event.status],
         };
       })
     );
@@ -31,6 +35,7 @@ export default function Calendar({ events }: Props) {
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={calendarEvents as EventSourceInput}
+        eventClick={(e) => dispatch(setShowModal(Number(e.event.id)))}
       />
     </div>
   );
